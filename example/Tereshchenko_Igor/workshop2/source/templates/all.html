@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>All Data</title>
+</head>
+<body>
+<h1>All Info From Dictionaries</h1>
+<h2>Users</h2>
+<table>
+    {% for key, value in user.items() %}
+    <tr>
+        <th>{{ key }}</th>
+        <td>{{ value }}</td>
+    </tr>
+    {% endfor %}
+</table>
+<br>
+<br>
+<h2>Notifications</h2>
+<table>
+    {% for key, value in notification.items() %}
+    <tr>
+        <th>{{ key }}</th>
+        <td>{{ value }}</td>
+    </tr>
+    {% endfor %}
+</table>
+<br>
+<br>
+<h2>Events</h2>
+<table>
+    {% for key, value in event.items() %}
+    <tr>
+        <th>{{ key }}</th>
+        <td>{{ value }}</td>
+    </tr>
+    {% endfor %}
+</table>
+<br>
+<br>
+<h2>Places</h2>
+<table>
+    {% for key, value in place.items() %}
+    <tr>
+        <th>{{ key }}</th>
+        <td>{{ value }}</td>
+    </tr>
+    {% endfor %}
+</table>
+<br>
+<br>
+<h2>Created Event</h2>
+<table>
+    {% for key, value in created_event.items() %}
+    <tr>
+        <th>{{ key }}</th>
+        <td>{{ value }}</td>
+    </tr>
+    {% endfor %}
+</table>
+<br>
+<br>
+<h2>Queue</h2>
+<table>
+    {% for key, value in queue.items() %}
+    <tr>
+        <th>{{ key }}</th>
+        <td>{{ value }}</td>
+    </tr>
+    {% endfor %}
+</table>
+</body>
+</html>

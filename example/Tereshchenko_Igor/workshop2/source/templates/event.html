@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Event</title>
+</head>
+<body>
+<form action="/api" method="post" id="form_event">
+    <div>
+        <label>Input event name :
+            <input type="text" name="event_name" value="{{ event.get('event_name') }}"/>
+        </label>
+    </div>
+    <button type="submit" form="form_event" name="action" value="event_update">Submit</button>
+</form>
+</body>
+</html>

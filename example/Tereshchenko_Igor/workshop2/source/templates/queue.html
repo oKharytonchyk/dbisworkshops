@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Queue</title>
+</head>
+<body>
+<form action="/api" method="post" id="form_queue">
+    <label>Input notification status :
+        <input type="text" name="notification_status" value="{{ queue.get('notification_status') }}"/>
+    </label><br>
+    <label>Input user login :
+        <input type="text" name="user_login" value="{{ queue.get('user_login') }}"/>
+    </label><br>
+    <label>Input place id :
+        <input type="number" name="place_id" value="{{ queue.get('place_id') }}"/>
+    </label><br>
+    <label>Input event name :
+        <input type="text" name="event_name" value="{{ queue.get('event_name') }}"/>
+    </label><br>
+    <label>Input date creation event :
+        <input type="text" name="date_creation_event" value="{{ queue.get('date_creation_event') }}"/>
+    </label><br>
+    <label>Input date request creation :
+        <input type="text" name="date_request_creation" value="{{ queue.get('date_request_creation') }}"/>
+    </label><br>
+    <label>Input wishlist status :
+        <input type="text" name="wishlist_status" value="{{ queue.get('wishlist_status') }}"/>
+    </label><br>
+    <button type="submit" form="form_queue" name="action" value="queue_update">Submit</button>
+</form>
+</body>
+</html>

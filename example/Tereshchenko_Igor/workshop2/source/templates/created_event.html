@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Created Event</title>
+</head>
+<body>
+<form action="/api" method="post" id="form_created_event">
+    <label>Input place id :
+        <input type="number" name="place_id" value="{{ created_event.get('place_id') }}"/>
+    </label><br>
+    <label>Input event name :
+        <input type="text" name="event_name" value="{{ created_event.get('event_name') }}"/>
+    </label><br>
+    <label>Input date creation event :
+        <input type="text" name="date_creation_event" value="{{ created_event.get('date_creation_event') }}"/>
+    </label><br>
+    <button type="submit" form="form_created_event" name="action" value="created_event_update">Submit</button>
+</form>
+</body>
+</html>

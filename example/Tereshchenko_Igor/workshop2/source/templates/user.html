@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User</title>
+</head>
+<body>
+<form action="/api" method="post" id="form_user">
+    <label>Input login :
+        <input type="text" name="user_login" value="{{ user.get('user_login') }}"/>
+    </label><br>
+    <label>Input password :
+        <input type="password" name="user_password" value="{{ user.get('user_password') }}"/>
+    </label><br>
+    <label>Input email :
+        <input type="email" name="user_email" value="{{ user.get('user_email') }}"/>
+    </label><br>
+    <button type="submit" form="form_user" name="action" value="user_update">Submit</button>
+</form>
+</body>
+</html>

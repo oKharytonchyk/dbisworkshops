@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Notification</title>
+</head>
+<body>
+<form action="/api" method="post" id="form_notification">
+    <div>
+        <label>Input notification status :
+            <input type="text" name="notification_status" value="{{ notification.get('notification_status') }}"/>
+        </label><br>
+    </div>
+    <button type="submit" form="form_notification" name="action" value="notification_update">Submit</button>
+</form>
+</body>
+</html>

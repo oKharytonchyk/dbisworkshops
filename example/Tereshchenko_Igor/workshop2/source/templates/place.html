@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Place</title>
+</head>
+<body>
+<form action="/api" method="post" id="form_place">
+    <label>Input place id :
+        <input type="number" name="place_id" value="{{ place.get('place_id') }}"/>
+    </label><br>
+    <label>Input address :
+        <input type="text" name="address" value="{{ place.get('address') }}"/>
+    </label><br>
+    <label>Input room number :
+        <input type="number" name="room_number" value="{{ place.get('room_number') }}"/>
+    </label><br>
+    <label>Input schedule :
+        <input type="text" name="schedule" value="{{ place.get('schedule') }}"/>
+    </label><br>
+    <button type="submit" form="form_place" name="action" value="place_update">Submit</button>
+</form>
+</body>
+</html>
