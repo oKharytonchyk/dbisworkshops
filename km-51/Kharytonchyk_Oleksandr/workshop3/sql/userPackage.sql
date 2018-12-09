@@ -36,8 +36,7 @@ CREATE OR REPLACE PACKAGE BODY USER_PACKAGE AS
       INSERT INTO SuperUser (user_login, user_password, user_email) VALUES (LOGIN, PASSWORD, EMAIL);
     END;
 
-END;
+END USER_PACKAGE;
 /
 
-SELECT *
-FROM TABLE (USER_PACKAGE.LOG_IN('ledoff.sky', 'qwerty123456'));
+select USER_PACKAGE.LOG_IN('ledoff.sky','qwerty123456') from dual;
