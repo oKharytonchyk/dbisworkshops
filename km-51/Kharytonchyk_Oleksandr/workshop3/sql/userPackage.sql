@@ -26,8 +26,8 @@ CREATE OR REPLACE PACKAGE BODY USER_PACKAGE AS
     CURSOR MY_CUR IS
       SELECT *
       FROM SuperUser
-      WHERE SuperUser.user_login = LOGIN
-        AND SuperUser.user_password = PASSWORD;
+      WHERE user_login = LOGIN
+        AND user_password = PASSWORD;
     BEGIN
       FOR rec IN MY_CUR
       LOOP
