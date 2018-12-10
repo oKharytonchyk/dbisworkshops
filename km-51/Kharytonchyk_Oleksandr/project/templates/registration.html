@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Registration</title>
+</head>
+<body>
+
+<!-- need regForm is instance of RegistrationForm-->
+<form action="/registration" method="POST">
+
+    {{regForm.hidden_tag()}}
+
+    {{regForm.login.label}}{{regForm.login}}<br/>
+    {{regForm.password.label}}{{regForm.password}}<br/>
+    {{regForm.email.label}}{{regForm.email}}<br/>
+    {{regForm.submit}}
+
+</form>
+
+<div>
+    <!--error section-->
+    Error list : {{regForm.login.errors}}
+
+    {%for error in regForm.login.errors%}
+    {{error}}
+    {%endfor%}
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+</head>
+<body>
+
+<!-- need myform is instance of LoginForm-->
+<form action="/login" , method="POST">
+
+    {{myform.hidden_tag()}}
+
+    {{myform.login.label}}{{myform.login}}<br/>
+    {{myform.password.label}}{{myform.password}}<br/>
+    {{myform.submit}}
+
+</form>
+
+<div>
+    <!--error section-->
+    Error list : {{myform.login.errors}}
+
+    {%for error in myform.login.errors%}
+    {{error}}
+    {%endfor%}
+
+</div>
+
+</body>
+</html>
