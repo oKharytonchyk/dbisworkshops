@@ -13,9 +13,10 @@ CREATE OR REPLACE PACKAGE USER_PACKAGE AS
                   PASSWORD IN SuperUser.user_password%TYPE)
     RETURN NUMBER;
 
-  PROCEDURE REGISTER(LOGIN    IN SuperUser.user_login%TYPE,
-                     PASSWORD IN SuperUser.user_password%TYPE,
-                     EMAIL    IN SuperUser.user_email%TYPE);
+  PROCEDURE REGISTER(STATUS   OUT VARCHAR2,
+                     LOGIN    IN  SuperUser.user_login%TYPE,
+                     PASSWORD IN  SuperUser.user_password%TYPE,
+                     EMAIL    IN  SuperUser.user_email%TYPE);
 END;
 
 
@@ -30,13 +31,27 @@ CREATE OR REPLACE PACKAGE BODY USER_PACKAGE AS
       RETURN (res);
     END;
 
-  PROCEDURE REGISTER(LOGIN IN SuperUser.user_login%TYPE, PASSWORD IN SuperUser.user_password%TYPE,
-                     EMAIL IN SuperUser.user_email%TYPE) AS
+  PROCEDURE REGISTER(STATUS   OUT VARCHAR2,
+                     LOGIN    IN  SuperUser.user_login%TYPE,
+                     PASSWORD IN  SuperUser.user_password%TYPE,
+                     EMAIL    IN  SuperUser.user_email%TYPE) AS
     BEGIN
       INSERT INTO SuperUser (user_login, user_password, user_email) VALUES (LOGIN, PASSWORD, EMAIL);
+
+      COMMIT;
+      STATUS := '200 OK';
+      exception
+      WHEN DUP_VAL_ON_INDEX
+      THEN
+        STATUS := '500 Already inserted';
+      WHEN OTHERS
+      THEN
+        STATUS := SQLERRM;
     END;
+
 
 END USER_PACKAGE;
 /
 
-select USER_PACKAGE.LOG_IN('ledoff.sky','qwerty123456') from dual;
+select USER_PACKAGE.LOG_IN('ledoff.sky', 'qwerty123456')
+from dual;
