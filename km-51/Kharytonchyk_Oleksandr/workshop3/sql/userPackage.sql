@@ -13,10 +13,10 @@ CREATE OR REPLACE PACKAGE USER_PACKAGE AS
                   PASSWORD IN SuperUser.user_password%TYPE)
     RETURN NUMBER;
 
-  PROCEDURE REGISTER(STATUS   OUT VARCHAR2,
-                     LOGIN    IN  SuperUser.user_login%TYPE,
-                     PASSWORD IN  SuperUser.user_password%TYPE,
-                     EMAIL    IN  SuperUser.user_email%TYPE);
+  FUNCTION REGISTER(LOGIN    IN SuperUser.user_login%TYPE,
+                    PASSWORD IN SuperUser.user_password%TYPE,
+                    EMAIL    IN SuperUser.user_email%TYPE)
+    RETURN VARCHAR2;
 END;
 
 
@@ -31,10 +31,11 @@ CREATE OR REPLACE PACKAGE BODY USER_PACKAGE AS
       RETURN (res);
     END;
 
-  PROCEDURE REGISTER(STATUS   OUT VARCHAR2,
-                     LOGIN    IN  SuperUser.user_login%TYPE,
-                     PASSWORD IN  SuperUser.user_password%TYPE,
-                     EMAIL    IN  SuperUser.user_email%TYPE) AS
+  FUNCTION REGISTER(LOGIN    IN SuperUser.user_login%TYPE,
+                    PASSWORD IN SuperUser.user_password%TYPE,
+                    EMAIL    IN SuperUser.user_email%TYPE)
+    RETURN VARCHAR2 AS
+    STATUS VARCHAR2(50);
     BEGIN
       INSERT INTO SuperUser (user_login, user_password, user_email) VALUES (LOGIN, PASSWORD, EMAIL);
 
