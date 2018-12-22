@@ -21,22 +21,18 @@ CREATE OR REPLACE PACKAGE USER_PACKAGE AS
   FUNCTION GET_USERS(LOGIN IN SuperUser.user_login%TYPE DEFAULT NULL)
     RETURN T_USER_TABLE PIPELINED;
 
-  --   FUNCTION UPDATE_USERS(LOGIN    IN SuperUser.user_login%TYPE,
-  --                         PASSWORD IN SuperUser.user_password%TYPE,
-  --                         EMAIL    IN SuperUser.user_email%TYPE)
+  --   FUNCTION UPDATE_USER(LOGIN IN SuperUser.user_login%TYPE)
   --     RETURN VARCHAR2;
-  --
-  --   FUNCTION DELETE_USERS(LOGIN    IN SuperUser.user_login%TYPE,
-  --                         PASSWORD IN SuperUser.user_password%TYPE,
-  --                         EMAIL    IN SuperUser.user_email%TYPE)
-  --     RETURN VARCHAR2;
+
+  FUNCTION DELETE_USER(LOGIN IN SuperUser.user_login%TYPE)
+    RETURN VARCHAR2;
 END;
 
 
 CREATE OR REPLACE PACKAGE BODY USER_PACKAGE AS
   FUNCTION LOG_IN(LOGIN IN SuperUser.user_login%TYPE, PASSWORD IN SuperUser.user_password%TYPE)
     RETURN NUMBER AS
-    res NUMBER(1);
+    res NUMBER(10);
     begin
       SELECT count(*)
           INTO res FROM SuperUser WHERE user_login = LOGIN
@@ -47,20 +43,18 @@ CREATE OR REPLACE PACKAGE BODY USER_PACKAGE AS
   FUNCTION REGISTER(LOGIN    IN SuperUser.user_login%TYPE,
                     PASSWORD IN SuperUser.user_password%TYPE,
                     EMAIL    IN SuperUser.user_email%TYPE)
-    RETURN VARCHAR2 AS
-    STATUS VARCHAR2(50);
+    RETURN VARCHAR2 AS PRAGMA AUTONOMOUS_TRANSACTION;
     BEGIN
       INSERT INTO SuperUser (user_login, user_password, user_email) VALUES (LOGIN, PASSWORD, EMAIL);
-
       COMMIT;
-      STATUS := '200 OK';
+      RETURN '200 OK';
       exception
       WHEN DUP_VAL_ON_INDEX
       THEN
-        STATUS := '500 Already inserted';
+        RETURN '500 Already inserted';
       WHEN OTHERS
       THEN
-        STATUS := SQLERRM;
+        RETURN SQLERRM;
     END;
 
   FUNCTION GET_USERS(LOGIN IN SuperUser.user_login%TYPE DEFAULT NULL)
@@ -86,10 +80,41 @@ CREATE OR REPLACE PACKAGE BODY USER_PACKAGE AS
         exit when (user_cursor%NOTFOUND);
         PIPE ROW (cursor_data);
       END LOOP;
-    END GET_USERS;
+    END;
+
+  --   FUNCTION UPDATE_USER(OLD_LOGIN    IN SuperUser.user_login%TYPE,
+  --                        NEW_LOGIN    IN SuperUser.user_login%TYPE,
+  --                        NEW_PASSWORD IN SuperUser.USER_PASSWORD%TYPE,
+  --                        NEW_EMAIL    IN SuperUser.USER_EMAIL%TYPE)
+  --     RETURN VARCHAR2;
+  -- COMMIT;
+
+  FUNCTION DELETE_USER(LOGIN IN SuperUser.user_login%TYPE)
+    RETURN VARCHAR2 AS PRAGMA AUTONOMOUS_TRANSACTION;
+    BEGIN
+      delete from SuperUser where USER_LOGIN = LOGIN;
+      COMMIT;
+        return '200 OK';
+      exception
+      WHEN DUP_VAL_ON_INDEX
+      THEN
+        return '500 Already inserted';
+      WHEN OTHERS
+      THEN
+        return SQLERRM;
+    END;
 
 END USER_PACKAGE;
 /
 
 select *
 from table (USER_PACKAGE.GET_USERS());
+
+select USER_PACKAGE.LOG_IN('ledoff.sky', 'qwerty123456')
+from dual;
+
+select USER_PACKAGE.REGISTER('ledoff.sky1', 'Password123456', 'newEmail@mailc.pmc')
+from dual;
+
+select USER_PACKAGE.DELETE_USER('ledoff.sky1')
+from dual;
