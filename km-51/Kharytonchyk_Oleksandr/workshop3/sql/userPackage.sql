@@ -21,8 +21,11 @@ CREATE OR REPLACE PACKAGE USER_PACKAGE AS
   FUNCTION GET_USERS(LOGIN IN SuperUser.user_login%TYPE DEFAULT NULL)
     RETURN T_USER_TABLE PIPELINED;
 
-  --   FUNCTION UPDATE_USER(LOGIN IN SuperUser.user_login%TYPE)
-  --     RETURN VARCHAR2;
+  FUNCTION UPDATE_USER(OLD_LOGIN    IN SuperUser.user_login%TYPE,
+                       NEW_LOGIN    IN SuperUser.user_login%TYPE,
+                       NEW_PASSWORD IN SuperUser.USER_PASSWORD%TYPE,
+                       NEW_EMAIL    IN SuperUser.USER_EMAIL%TYPE)
+    RETURN VARCHAR2;
 
   FUNCTION DELETE_USER(LOGIN IN SuperUser.user_login%TYPE)
     RETURN VARCHAR2;
@@ -82,19 +85,34 @@ CREATE OR REPLACE PACKAGE BODY USER_PACKAGE AS
       END LOOP;
     END;
 
-  --   FUNCTION UPDATE_USER(OLD_LOGIN    IN SuperUser.user_login%TYPE,
-  --                        NEW_LOGIN    IN SuperUser.user_login%TYPE,
-  --                        NEW_PASSWORD IN SuperUser.USER_PASSWORD%TYPE,
-  --                        NEW_EMAIL    IN SuperUser.USER_EMAIL%TYPE)
-  --     RETURN VARCHAR2;
-  -- COMMIT;
+  FUNCTION UPDATE_USER(OLD_LOGIN    IN SuperUser.user_login%TYPE,
+                       NEW_LOGIN    IN SuperUser.user_login%TYPE,
+                       NEW_PASSWORD IN SuperUser.USER_PASSWORD%TYPE,
+                       NEW_EMAIL    IN SuperUser.USER_EMAIL%TYPE)
+    RETURN VARCHAR2 AS PRAGMA AUTONOMOUS_TRANSACTION;
+    BEGIN
+      UPDATE SUPERUSER
+      SET USER_LOGIN    = NEW_LOGIN,
+          USER_PASSWORD = NEW_PASSWORD,
+          USER_EMAIL    = NEW_EMAIL
+      WHERE USER_LOGIN = OLD_LOGIN;
+      COMMIT;
+      return '200 OK';
+      exception
+      WHEN DUP_VAL_ON_INDEX
+      THEN
+        return '500 Already inserted';
+      WHEN OTHERS
+      THEN
+        return SQLERRM;
+    END;
 
   FUNCTION DELETE_USER(LOGIN IN SuperUser.user_login%TYPE)
     RETURN VARCHAR2 AS PRAGMA AUTONOMOUS_TRANSACTION;
     BEGIN
       delete from SuperUser where USER_LOGIN = LOGIN;
       COMMIT;
-        return '200 OK';
+      return '200 OK';
       exception
       WHEN DUP_VAL_ON_INDEX
       THEN
@@ -113,8 +131,13 @@ from table (USER_PACKAGE.GET_USERS());
 select USER_PACKAGE.LOG_IN('ledoff.sky', 'qwerty123456')
 from dual;
 
-select USER_PACKAGE.REGISTER('ledoff.sky1', 'Password123456', 'newEmail@mailc.pmc')
+select USER_PACKAGE.REGISTER('ledoff.sky1', 'Password123456', 'Email@mailc.pmc')
 from dual;
 
-select USER_PACKAGE.DELETE_USER('ledoff.sky1')
+select USER_PACKAGE.UPDATE_USER('ledoff.sky1', 'newLedoff.sky', 'newPassword123456', 'newEmail@mailc.pmc')
 from dual;
+
+select USER_PACKAGE.DELETE_USER('newLedoff.sky')
+from dual;
+
+
