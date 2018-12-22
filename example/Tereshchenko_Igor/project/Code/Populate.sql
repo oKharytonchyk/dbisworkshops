@@ -1,21 +1,19 @@
-/* Create SuperUsers */
+/* Create Users */
  
-INSERT INTO SuperUser (user_login, user_password, user_email) 
+INSERT INTO "User" (user_login, user_password, user_email) 
   VALUES ('ledoff.sky', 'qwerty123456', 'ledoff.sky@ukr.net');
-INSERT INTO SuperUser (user_login, user_password, user_email) 
+INSERT INTO "User" (user_login, user_password, user_email) 
   VALUES ('Adamobskiy', 'lubliuPITON', 'Adamobskiy@gmail.com');
-INSERT INTO SuperUser (user_login, user_password, user_email) 
+INSERT INTO "User" (user_login, user_password, user_email) 
   VALUES ('kotick', 'cockpit', 'hybris@gmail.com');
-INSERT INTO SuperUser (user_login, user_password, user_email) 
+INSERT INTO "User" (user_login, user_password, user_email) 
   VALUES ('Slidan', 'youtube', 'slidan1@ukr.net');
 
  
-/* Create Notifications */
+/* Create Statuses */
 
-INSERT INTO Notification (notification_status) VALUES ('You are 10th');
-INSERT INTO Notification (notification_status) VALUES ('You are 5th');
-INSERT INTO Notification (notification_status) VALUES ('You are 3rd');
-INSERT INTO Notification (notification_status) VALUES ('You are next');
+INSERT INTO Status (status) VALUES ('approved');
+INSERT INTO Status (status) VALUES ('rejected');
  
  
 /* Create Places */
@@ -45,11 +43,11 @@ INSERT INTO CreatedEvent (place_id, event_name, date_creation_event) VALUES (4, 
 
 /* Create Queues */
 
-INSERT INTO Queue (notification_status, user_login, place_id, event_name, date_creation_event, date_request_creation, wishlist_status)
-   VALUES ('You are 10th', 'ledoff.sky', 2, 'Doctor', TO_DATE('2018-11-11', 'YYYY-MM-DD'), TO_DATE('2019-01-01', 'YYYY-MM-DD'), 'approved');
-INSERT INTO Queue (notification_status, user_login, place_id, event_name, date_creation_event, date_request_creation, wishlist_status)
-   VALUES ('You are 10th', 'ledoff.sky', 2, 'Doctor', TO_DATE('2018-11-11', 'YYYY-MM-DD'), TO_DATE('2019-01-02', 'YYYY-MM-DD'), 'rejected');
-INSERT INTO Queue (notification_status, user_login, place_id, event_name, date_creation_event, date_request_creation, wishlist_status)
-   VALUES ('You are 3rd', 'Adamobskiy', 4, 'Talent show', TO_DATE('2018-01-27', 'YYYY-MM-DD'), TO_DATE('2019-01-03', 'YYYY-MM-DD'), 'approved');
-INSERT INTO Queue (notification_status, user_login, place_id, event_name, date_creation_event, date_request_creation, wishlist_status)
-   VALUES ('You are next', 'Slidan', 1, 'Concert', TO_DATE('2018-12-12', 'YYYY-MM-DD'), TO_DATE('2019-01-04', 'YYYY-MM-DD'), 'approved');
+INSERT INTO Queue (status, user_login, place_id, event_name, date_creation_event, date_request_creation)
+   VALUES ('approved', 'ledoff.sky', 2, 'Doctor', TO_DATE('2018-11-11', 'YYYY-MM-DD'), TO_DATE('2019-01-01', 'YYYY-MM-DD'));
+INSERT INTO Queue (status, user_login, place_id, event_name, date_creation_event, date_request_creation)
+   VALUES ('rejected', 'ledoff.sky', 2, 'Doctor', TO_DATE('2018-11-11', 'YYYY-MM-DD'), TO_DATE('2019-01-02', 'YYYY-MM-DD'));
+INSERT INTO Queue (status, user_login, place_id, event_name, date_creation_event, date_request_creation)
+   VALUES ('approved', 'Adamobskiy', 4, 'Talent show', TO_DATE('2018-01-27', 'YYYY-MM-DD'), TO_DATE('2019-01-03', 'YYYY-MM-DD'));
+INSERT INTO Queue (status, user_login, place_id, event_name, date_creation_event, date_request_creation)
+   VALUES ('approved', 'Slidan', 1, 'Concert', TO_DATE('2018-12-12', 'YYYY-MM-DD'), TO_DATE('2019-01-04', 'YYYY-MM-DD'));
