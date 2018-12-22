@@ -121,6 +121,7 @@ from table (PLACE_PACKAGE.GET_PLACES());
 
 select PLACE_PACKAGE.CREATE_PLACE(100, 'Khreshatyk 1b', 110, '08:00 20:00')
 from dual;
+            
 select *
 from table (PLACE_PACKAGE.GET_PLACES(100));
 
