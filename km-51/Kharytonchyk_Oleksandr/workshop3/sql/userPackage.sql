@@ -11,7 +11,7 @@ CREATE OR REPLACE PACKAGE USER_PACKAGE AS
 
   FUNCTION LOG_IN(LOGIN    IN SuperUser.user_login%TYPE,
                   PASSWORD IN SuperUser.user_password%TYPE)
-    RETURN NUMBER;
+    RETURN VARCHAR2;
 
   FUNCTION REGISTER(LOGIN    IN SuperUser.user_login%TYPE,
                     PASSWORD IN SuperUser.user_password%TYPE,
@@ -34,13 +34,17 @@ END;
 
 CREATE OR REPLACE PACKAGE BODY USER_PACKAGE AS
   FUNCTION LOG_IN(LOGIN IN SuperUser.user_login%TYPE, PASSWORD IN SuperUser.user_password%TYPE)
-    RETURN NUMBER AS
-    res NUMBER(10);
+    RETURN VARCHAR2
+  IS
+    quantity NUMBER(10);
     begin
       SELECT count(*)
-          INTO res FROM SuperUser WHERE user_login = LOGIN
-                                    AND user_password = PASSWORD;
-      RETURN (res);
+          INTO quantity FROM SuperUser WHERE user_login = LOGIN
+                                         AND user_password = PASSWORD;
+      if quantity = 1
+      then return '200 OK';
+      else return '-200 NE OK';
+      end if;
     END;
 
   FUNCTION REGISTER(LOGIN    IN SuperUser.user_login%TYPE,
