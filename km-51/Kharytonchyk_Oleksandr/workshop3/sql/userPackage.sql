@@ -1,9 +1,9 @@
 CREATE OR REPLACE PACKAGE USER_PACKAGE AS
 
   TYPE T_USER IS RECORD (
-  user_login VARCHAR2(20)
+  user_login VARCHAR2(20),
   --   user_password VARCHAR2(20),
-  --   user_email VARCHAR2(40)
+  user_email VARCHAR2(40)
   );
 
   TYPE T_USER_TABLE IS
@@ -69,13 +69,13 @@ CREATE OR REPLACE PACKAGE BODY USER_PACKAGE AS
     cursor_data T_USER;
     query_str   varchar2(1000);
     begin
-      query_str := 'select user_login
+      query_str := 'select user_login, user_email
                         from SUPERUSER';
       if LOGIN is not null
       then
         query_str := query_str || ' where trim(user_login) = trim(''' || LOGIN || ''') ';
       end if;
-      query_str := query_str || ' group by user_login';
+      --       query_str := query_str || ' group by user_login';
 
       OPEN user_cursor FOR query_str;
       LOOP
@@ -139,5 +139,3 @@ from dual;
 
 select USER_PACKAGE.DELETE_USER('newLedoff.sky')
 from dual;
-
-
