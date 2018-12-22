@@ -95,24 +95,22 @@ CREATE OR REPLACE PACKAGE BODY QUEUE_PACKAGE AS
                         from Queue';
       if Q_STATUS is not null
       then
-        query_str := query_str || ' where trim(STATUS) = trim(''' || Q_STATUS || ''') ';
+        query_str := query_str || ' where STATUS = trim(''' || Q_STATUS || ''') ';
         if Q_USER_LOGIN is not null
         then
-          query_str := query_str || ' AND trim(USER_LOGIN) = trim(''' || Q_USER_LOGIN || ''') ';
+          query_str := query_str || ' AND USER_LOGIN = trim(''' || Q_USER_LOGIN || ''') ';
           if Q_PLACE_ID is not null
           then
-            query_str := query_str || ' AND trim(PLACE_ID) = trim(''' || Q_PLACE_ID || ''') ';
+            query_str := query_str || ' AND PLACE_ID = trim(''' || Q_PLACE_ID || ''') ';
             if Q_EVENT_NAME is not null
             then
-              query_str := query_str || ' AND trim(EVENT_NAME) = trim(''' || Q_EVENT_NAME || ''') ';
+              query_str := query_str || ' AND EVENT_NAME = trim(''' || Q_EVENT_NAME || ''') ';
               if Q_DATE_CREATION_EVENT is not null
               then
-                query_str :=
-                query_str || ' AND trim(DATE_CREATION_EVENT) = trim(''' || Q_DATE_CREATION_EVENT || ''') ';
+                query_str := query_str || ' AND DATE_CREATION_EVENT = trim(''' || Q_DATE_CREATION_EVENT || ''') ';
                 if Q_DATE_REQUEST_CREATION is not null
                 then
-                  query_str :=
-                  query_str || ' AND trim(DATE_REQUEST_CREATION) = trim(''' || Q_DATE_REQUEST_CREATION || ''') ';
+                  query_str := query_str || ' AND DATE_REQUEST_CREATION = trim(''' || Q_DATE_REQUEST_CREATION || ''') ';
                 end if;
               end if;
             end if;
