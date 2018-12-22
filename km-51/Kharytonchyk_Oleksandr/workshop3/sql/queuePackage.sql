@@ -59,7 +59,7 @@ CREATE OR REPLACE PACKAGE BODY QUEUE_PACKAGE AS
                         NEW_DATE_REQUEST_CREATION IN QUEUE.DATE_REQUEST_CREATION%type)
     RETURN VARCHAR2 AS PRAGMA AUTONOMOUS_TRANSACTION;
     BEGIN
-      INSERT INTO QUEUE (status, user_login, place_id, event_name, date_creation_event, date_request_creation)
+      INSERT INTO QUEUE (STATUS, USER_LOGIN, PLACE_ID, EVENT_NAME, DATE_CREATION_EVENT, DATE_REQUEST_CREATION)
       VALUES (NEW_STATUS,
               NEW_USER_LOGIN,
               NEW_PLACE_ID,
@@ -92,7 +92,7 @@ CREATE OR REPLACE PACKAGE BODY QUEUE_PACKAGE AS
     query_str    varchar2(1000);
     begin
       query_str := 'select STATUS, USER_LOGIN, PLACE_ID, EVENT_NAME, DATE_CREATION_EVENT, DATE_REQUEST_CREATION
-                        from Queue';
+                        from QUEUE ';
       if Q_STATUS is not null
       then
         query_str := query_str || ' where STATUS = trim(''' || Q_STATUS || ''') ';
@@ -194,3 +194,24 @@ CREATE OR REPLACE PACKAGE BODY QUEUE_PACKAGE AS
 
 END QUEUE_PACKAGE;
 /
+
+select *
+from table (QUEUE_PACKAGE.GET_QUEUES());
+
+select QUEUE_PACKAGE.CREATE_QUEUE('approved', 'kotick', 1, 'Concert', TO_DATE('2018-12-12', 'YYYY-MM-DD'),
+                                  TO_DATE('2020-12-12', 'YYYY-MM-DD'))
+from dual;
+
+select *
+from table (QUEUE_PACKAGE.GET_QUEUES('approved'));
+
+select QUEUE_PACKAGE.UPDATE_QUEUE('approved', 'kotick', 1, 'Concert', TO_DATE('2018-12-12', 'YYYY-MM-DD'),
+                                  TO_DATE('2020-12-12', 'YYYY-MM-DD'),
+                                  'rejected', 'kotick', 1, 'Concert', TO_DATE('2018-12-12', 'YYYY-MM-DD'),
+                                  TO_DATE('2020-11-10', 'YYYY-MM-DD'))
+from dual;
+
+select QUEUE_PACKAGE.DELETE_QUEUE('rejected', 'kotick', 1, 'Concert', TO_DATE('2018-12-12', 'YYYY-MM-DD'),
+                                  TO_DATE('2020-11-10', 'YYYY-MM-DD'))
+from dual;
+
