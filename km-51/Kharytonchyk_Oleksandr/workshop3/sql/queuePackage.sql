@@ -1,54 +1,198 @@
-CREATE OR REPLACE PACKAGE QUEUE_LIST_PACKAGE AS
-  TYPE T_LIST IS RECORD (
-  notification_status VARCHAR2(20),
+CREATE OR REPLACE PACKAGE QUEUE_PACKAGE AS
+  TYPE T_QUEUE IS RECORD (
+  status VARCHAR2(20),
   user_login VARCHAR2(20),
   place_id NUMBER,
   event_name VARCHAR2(50),
   date_creation_event DATE,
-  date_request_creation DATE,
-  wishlist_status VARCHAR2(10)
+  date_request_creation DATE
   );
 
-  TYPE T_LIST_TABLE IS TABLE OF T_LIST;
+  TYPE T_QUEUE_TABLE IS TABLE OF T_QUEUE;
 
-  PROCEDURE ADD_QUEUE(notification_status 	IN Queue.notification_status%TYPE,
-		      user_login 		IN Queue.user_login%TYPE,
-		      place_id 			IN Queue.place_id%TYPE,
-		      event_name 		IN Queue.event_name%TYPE,
-		      date_creation_event 	IN Queue.date_creation_event%TYPE,
-		      date_request_creation 	IN Queue.date_request_creation%TYPE,
-		      wishlist_status 		IN Queue.wishlist_status%TYPE
-			);
-  FUNCTION GET_QUEUE_LIST
-    RETURN T_LIST_TABLE PIPELINED;
+  FUNCTION CREATE_QUEUE(NEW_STATUS                IN QUEUE.STATUS%type,
+                        NEW_USER_LOGIN            IN QUEUE.USER_LOGIN%type,
+                        NEW_PLACE_ID              IN QUEUE.PLACE_ID%type,
+                        NEW_EVENT_NAME            IN QUEUE.EVENT_NAME%type,
+                        NEW_DATE_CREATION_EVENT   IN QUEUE.DATE_CREATION_EVENT%type,
+                        NEW_DATE_REQUEST_CREATION IN QUEUE.DATE_REQUEST_CREATION%type)
+    RETURN VARCHAR2;
+
+  FUNCTION GET_QUEUES(Q_STATUS                IN QUEUE.STATUS%type default null,
+                      Q_USER_LOGIN            IN QUEUE.USER_LOGIN%type default null,
+                      Q_PLACE_ID              IN QUEUE.PLACE_ID%type default null,
+                      Q_EVENT_NAME            IN QUEUE.EVENT_NAME%type default null,
+                      Q_DATE_CREATION_EVENT   IN QUEUE.DATE_CREATION_EVENT%type default null,
+                      Q_DATE_REQUEST_CREATION IN QUEUE.DATE_REQUEST_CREATION%type default null)
+    RETURN T_QUEUE_TABLE PIPELINED;
+
+  FUNCTION UPDATE_QUEUE(OLD_STATUS                IN QUEUE.STATUS%type,
+                        OLD_USER_LOGIN            IN QUEUE.USER_LOGIN%type,
+                        OLD_PLACE_ID              IN QUEUE.PLACE_ID%type,
+                        OLD_EVENT_NAME            IN QUEUE.EVENT_NAME%type,
+                        OLD_DATE_CREATION_EVENT   IN QUEUE.DATE_CREATION_EVENT%type,
+                        OLD_DATE_REQUEST_CREATION IN QUEUE.DATE_REQUEST_CREATION%type,
+                        NEW_STATUS                IN QUEUE.STATUS%type,
+                        NEW_USER_LOGIN            IN QUEUE.USER_LOGIN%type,
+                        NEW_PLACE_ID              IN QUEUE.PLACE_ID%type,
+                        NEW_EVENT_NAME            IN QUEUE.EVENT_NAME%type,
+                        NEW_DATE_CREATION_EVENT   IN QUEUE.DATE_CREATION_EVENT%type,
+                        NEW_DATE_REQUEST_CREATION IN QUEUE.DATE_REQUEST_CREATION%type)
+    RETURN VARCHAR2;
+
+  FUNCTION DELETE_QUEUE(Q_STATUS                IN QUEUE.STATUS%type,
+                        Q_USER_LOGIN            IN QUEUE.USER_LOGIN%type,
+                        Q_PLACE_ID              IN QUEUE.PLACE_ID%type,
+                        Q_EVENT_NAME            IN QUEUE.EVENT_NAME%type,
+                        Q_DATE_CREATION_EVENT   IN QUEUE.DATE_CREATION_EVENT%type,
+                        Q_DATE_REQUEST_CREATION IN QUEUE.DATE_REQUEST_CREATION%type)
+    RETURN VARCHAR2;
 
 END;
 
-CREATE OR REPLACE PACKAGE BODY QUEUE_LIST_PACKAGE AS
-  PROCEDURE ADD_QUEUE(notification_status 	IN Queue.notification_status%TYPE,
-		      user_login 		IN Queue.user_login%TYPE,
-		      place_id 			IN Queue.place_id%TYPE,
-		      event_name 		IN Queue.event_name%TYPE,
-		      date_creation_event 	IN Queue.date_creation_event%TYPE,
-		      date_request_creation 	IN Queue.date_request_creation%TYPE,
-		      wishlist_status 		IN Queue.wishlist_status%TYPE) AS
+CREATE OR REPLACE PACKAGE BODY QUEUE_PACKAGE AS
+  FUNCTION CREATE_QUEUE(NEW_STATUS                IN QUEUE.STATUS%type,
+                        NEW_USER_LOGIN            IN QUEUE.USER_LOGIN%type,
+                        NEW_PLACE_ID              IN QUEUE.PLACE_ID%type,
+                        NEW_EVENT_NAME            IN QUEUE.EVENT_NAME%type,
+                        NEW_DATE_CREATION_EVENT   IN QUEUE.DATE_CREATION_EVENT%type,
+                        NEW_DATE_REQUEST_CREATION IN QUEUE.DATE_REQUEST_CREATION%type)
+    RETURN VARCHAR2 AS PRAGMA AUTONOMOUS_TRANSACTION;
     BEGIN
-      INSERT INTO Queue (notification_status, user_login, place_id, event_name, date_creation_event, date_request_creation, wishlist_status)
-		 VALUES (notification_status, user_login, place_id, event_name, date_creation_event, date_request_creation, wishlist_status);
+      INSERT INTO QUEUE (status, user_login, place_id, event_name, date_creation_event, date_request_creation)
+      VALUES (NEW_STATUS,
+              NEW_USER_LOGIN,
+              NEW_PLACE_ID,
+              NEW_EVENT_NAME,
+              NEW_DATE_CREATION_EVENT,
+              NEW_DATE_REQUEST_CREATION);
+      COMMIT;
+      RETURN '200 OK';
+      exception
+      WHEN DUP_VAL_ON_INDEX
+      THEN
+        RETURN '500 Already inserted';
+      WHEN OTHERS
+      THEN
+        RETURN SQLERRM;
     END;
 
-  FUNCTION GET_QUEUE_LIST
-    RETURN T_LIST_TABLE PIPELINED AS
-    CURSOR MY_CURSOR IS
-      SELECT *
-      FROM Queue;
-    BEGIN
-      FOR REC IN MY_CURSOR
+  FUNCTION GET_QUEUES(Q_STATUS                IN QUEUE.STATUS%type default null,
+                      Q_USER_LOGIN            IN QUEUE.USER_LOGIN%type default null,
+                      Q_PLACE_ID              IN QUEUE.PLACE_ID%type default null,
+                      Q_EVENT_NAME            IN QUEUE.EVENT_NAME%type default null,
+                      Q_DATE_CREATION_EVENT   IN QUEUE.DATE_CREATION_EVENT%type default null,
+                      Q_DATE_REQUEST_CREATION IN QUEUE.DATE_REQUEST_CREATION%type default null)
+    RETURN T_QUEUE_TABLE
+  PIPELINED
+  IS
+    TYPE queue_cursor_type IS REF CURSOR;
+    queue_cursor queue_cursor_type;
+    cursor_data  T_QUEUE;
+    query_str    varchar2(1000);
+    begin
+      query_str := 'select STATUS, USER_LOGIN, PLACE_ID, EVENT_NAME, DATE_CREATION_EVENT, DATE_REQUEST_CREATION
+                        from Queue';
+      if Q_STATUS is not null
+      then
+        query_str := query_str || ' where trim(STATUS) = trim(''' || Q_STATUS || ''') ';
+        if Q_USER_LOGIN is not null
+        then
+          query_str := query_str || ' AND trim(USER_LOGIN) = trim(''' || Q_USER_LOGIN || ''') ';
+          if Q_PLACE_ID is not null
+          then
+            query_str := query_str || ' AND trim(PLACE_ID) = trim(''' || Q_PLACE_ID || ''') ';
+            if Q_EVENT_NAME is not null
+            then
+              query_str := query_str || ' AND trim(EVENT_NAME) = trim(''' || Q_EVENT_NAME || ''') ';
+              if Q_DATE_CREATION_EVENT is not null
+              then
+                query_str :=
+                query_str || ' AND trim(DATE_CREATION_EVENT) = trim(''' || Q_DATE_CREATION_EVENT || ''') ';
+                if Q_DATE_REQUEST_CREATION is not null
+                then
+                  query_str :=
+                  query_str || ' AND trim(DATE_REQUEST_CREATION) = trim(''' || Q_DATE_REQUEST_CREATION || ''') ';
+                end if;
+              end if;
+            end if;
+          end if;
+        end if;
+      end if;
+      --       query_str := query_str || ' group by user_login';
+
+      OPEN queue_cursor FOR query_str;
       LOOP
-        PIPE ROW (REC);
+        FETCH queue_cursor into cursor_data;
+        exit when (queue_cursor%NOTFOUND);
+        PIPE ROW (cursor_data);
       END LOOP;
     END;
-END QUEUE_LIST_PACKAGE;
-/
 
-select * from table (QUEUE_LIST_PACKAGE.GET_QUEUE_LIST())
+  FUNCTION UPDATE_QUEUE(OLD_STATUS                IN QUEUE.STATUS%type,
+                        OLD_USER_LOGIN            IN QUEUE.USER_LOGIN%type,
+                        OLD_PLACE_ID              IN QUEUE.PLACE_ID%type,
+                        OLD_EVENT_NAME            IN QUEUE.EVENT_NAME%type,
+                        OLD_DATE_CREATION_EVENT   IN QUEUE.DATE_CREATION_EVENT%type,
+                        OLD_DATE_REQUEST_CREATION IN QUEUE.DATE_REQUEST_CREATION%type,
+                        NEW_STATUS                IN QUEUE.STATUS%type,
+                        NEW_USER_LOGIN            IN QUEUE.USER_LOGIN%type,
+                        NEW_PLACE_ID              IN QUEUE.PLACE_ID%type,
+                        NEW_EVENT_NAME            IN QUEUE.EVENT_NAME%type,
+                        NEW_DATE_CREATION_EVENT   IN QUEUE.DATE_CREATION_EVENT%type,
+                        NEW_DATE_REQUEST_CREATION IN QUEUE.DATE_REQUEST_CREATION%type)
+    RETURN VARCHAR2 AS PRAGMA AUTONOMOUS_TRANSACTION;
+    BEGIN
+      UPDATE QUEUE
+      SET STATUS                = NEW_STATUS,
+          USER_LOGIN            = NEW_USER_LOGIN,
+          PLACE_ID              = NEW_PLACE_ID,
+          EVENT_NAME            = NEW_EVENT_NAME,
+          DATE_CREATION_EVENT   = NEW_DATE_CREATION_EVENT,
+          DATE_REQUEST_CREATION = NEW_DATE_REQUEST_CREATION
+      WHERE STATUS = OLD_STATUS
+        AND USER_LOGIN = OLD_USER_LOGIN
+        AND PLACE_ID = OLD_PLACE_ID
+        AND EVENT_NAME = OLD_EVENT_NAME
+        AND DATE_CREATION_EVENT = OLD_DATE_CREATION_EVENT
+        AND DATE_REQUEST_CREATION = OLD_DATE_REQUEST_CREATION;
+      COMMIT;
+      return '200 OK';
+      exception
+      WHEN DUP_VAL_ON_INDEX
+      THEN
+        return '500 Already inserted';
+      WHEN OTHERS
+      THEN
+        return SQLERRM;
+    END;
+
+  FUNCTION DELETE_QUEUE(Q_STATUS                IN QUEUE.STATUS%type,
+                        Q_USER_LOGIN            IN QUEUE.USER_LOGIN%type,
+                        Q_PLACE_ID              IN QUEUE.PLACE_ID%type,
+                        Q_EVENT_NAME            IN QUEUE.EVENT_NAME%type,
+                        Q_DATE_CREATION_EVENT   IN QUEUE.DATE_CREATION_EVENT%type,
+                        Q_DATE_REQUEST_CREATION IN QUEUE.DATE_REQUEST_CREATION%type)
+    RETURN VARCHAR2 AS PRAGMA AUTONOMOUS_TRANSACTION;
+    BEGIN
+      delete
+      from QUEUE
+      where STATUS = Q_STATUS
+        AND USER_LOGIN = Q_USER_LOGIN
+        AND PLACE_ID = Q_PLACE_ID
+        AND EVENT_NAME = Q_EVENT_NAME
+        AND DATE_CREATION_EVENT = Q_DATE_CREATION_EVENT
+        AND DATE_REQUEST_CREATION = Q_DATE_REQUEST_CREATION;
+      COMMIT;
+      return '200 OK';
+      exception
+      WHEN DUP_VAL_ON_INDEX
+      THEN
+        return '500 Already inserted';
+      WHEN OTHERS
+      THEN
+        return SQLERRM;
+    END;
+
+END QUEUE_PACKAGE;
+/
