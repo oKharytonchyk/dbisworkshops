@@ -1,12 +1,12 @@
-/* Create Users */
+/* Create SUPERUSERS */
  
-INSERT INTO "User" (user_login, user_password, user_email) 
+INSERT INTO SUPERUSER (user_login, user_password, user_email) 
   VALUES ('ledoff.sky', 'qwerty123456', 'ledoff.sky@ukr.net');
-INSERT INTO "User" (user_login, user_password, user_email) 
+INSERT INTO SUPERUSER (user_login, user_password, user_email) 
   VALUES ('Adamobskiy', 'lubliuPITON', 'Adamobskiy@gmail.com');
-INSERT INTO "User" (user_login, user_password, user_email) 
+INSERT INTO SUPERUSER (user_login, user_password, user_email) 
   VALUES ('kotick', 'cockpit', 'hybris@gmail.com');
-INSERT INTO "User" (user_login, user_password, user_email) 
+INSERT INTO SUPERUSER (user_login, user_password, user_email) 
   VALUES ('Slidan', 'youtube', 'slidan1@ukr.net');
 
  
