@@ -8,7 +8,7 @@ CREATE OR REPLACE PACKAGE PLACE_PACKAGE AS
 
   TYPE T_PLACE_TABLE IS TABLE OF T_PLACE;
 
-  FUNCTION CREATE_NEW_PLACE(NEW_PLACE_ID    IN Place.place_id%type,
+  FUNCTION CREATE_PLACE(NEW_PLACE_ID    IN Place.place_id%type,
                             NEW_ADDRESS     IN Place.ADDRESS%type,
                             NEW_ROOM_NUMBER IN Place.ROOM_NUMBER%type,
                             NEW_SCHEULE     IN Place.SCHEDULE%type)
@@ -29,7 +29,7 @@ CREATE OR REPLACE PACKAGE PLACE_PACKAGE AS
 END;
 
 CREATE OR REPLACE PACKAGE BODY PLACE_PACKAGE AS
-  FUNCTION CREATE_NEW_PLACE(NEW_PLACE_ID    IN Place.PLACE_ID%type,
+  FUNCTION CREATE_PLACE(NEW_PLACE_ID    IN Place.PLACE_ID%type,
                             NEW_ADDRESS     IN Place.ADDRESS%type,
                             NEW_ROOM_NUMBER IN Place.ROOM_NUMBER%type,
                             NEW_SCHEULE     IN Place.SCHEDULE%type)
