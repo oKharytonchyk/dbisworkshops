@@ -45,9 +45,9 @@ drop table SuperUser cascade constraints;
 /*==============================================================*/
 create table CreatedEvent
 (
-  place_id            CHAR(10)     not null,
+  place_id            INTEGER      not null,
   event_name          VARCHAR2(50) not null,
-  date_creation_event DATE         not null,
+  date_creation_event VARCHAR2(10) not null,
   constraint PK_CREATEDEVENT primary key (place_id, event_name, date_creation_event)
 );
 
@@ -81,7 +81,7 @@ create table Event
 /*==============================================================*/
 create table Place
 (
-  place_id    CHAR(10)     not null,
+  place_id    INTEGER      not null,
   address     VARCHAR2(60) not null,
   room_number INTEGER      not null,
   schedule    VARCHAR2(11) not null,
@@ -95,10 +95,10 @@ create table Queue
 (
   status                VARCHAR2(20) not null,
   user_login            VARCHAR2(20) not null,
-  place_id              CHAR(10)     not null,
+  place_id              INTEGER      not null,
   event_name            VARCHAR2(50) not null,
-  date_creation_event   DATE         not null,
-  date_request_creation DATE         not null,
+  date_creation_event   VARCHAR2(10) not null,
+  date_request_creation VARCHAR2(10) not null,
   constraint PK_QUEUE primary key (status, user_login, place_id, event_name, date_creation_event, date_request_creation)
 );
 
@@ -198,7 +198,7 @@ CHECK (REGEXP_LIKE(room_number, '\d{3,5}$'));
 
 alter table Place
   add constraint check_schedule
-CHECK (REGEXP_LIKE(schedule, '\d{2}:\d{2} \d{2}:\d{2}$'));
+CHECK (REGEXP_LIKE(schedule, '^[0-2][0-9]:[0-2][0-9] [0-2][0-9]:[0-2][0-9]$'));
 
 alter table Status
   add constraint check_status
@@ -210,8 +210,8 @@ CHECK (REGEXP_LIKE(event_name, '[^";]{4,50}$'));
 
 alter table CreatedEvent
   add constraint check_date_creation_event
-CHECK (REGEXP_LIKE(date_creation_event, '.{5,50}'));
+CHECK (REGEXP_LIKE(date_creation_event, '^\d{4}-\d2-\d2$'));
 
 alter table Queue
   add constraint check_date_request_creation
-CHECK (REGEXP_LIKE(date_request_creation, '.{5,50}'));
+CHECK (REGEXP_LIKE(date_request_creation, '^\d{4}-\d2-\d2$'));
