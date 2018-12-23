@@ -210,8 +210,8 @@ CHECK (REGEXP_LIKE(event_name, '[^";]{4,50}$'));
 
 alter table CreatedEvent
   add constraint check_date_creation_event
-CHECK (REGEXP_LIKE(date_creation_event, '^\d{4}-\d2-\d2$'));
+CHECK (REGEXP_LIKE(date_creation_event, '^\d{4}-\d{2}-\d{2}$'));
 
 alter table Queue
   add constraint check_date_request_creation
-CHECK (REGEXP_LIKE(date_request_creation, '^\d{4}-\d2-\d2$'));
+CHECK (REGEXP_LIKE(date_request_creation, '^\d{4}-\d{2}-\d{2}$'));
