@@ -4,8 +4,8 @@ CREATE OR REPLACE PACKAGE QUEUE_PACKAGE AS
   user_login VARCHAR2(20),
   place_id NUMBER,
   event_name VARCHAR2(50),
-  date_creation_event DATE,
-  date_request_creation DATE
+  date_creation_event VARCHAR2(10),
+  date_request_creation VARCHAR2(10)
   );
 
   TYPE T_QUEUE_TABLE IS TABLE OF T_QUEUE;
@@ -198,20 +198,15 @@ END QUEUE_PACKAGE;
 select *
 from table (QUEUE_PACKAGE.GET_QUEUES());
 
-select QUEUE_PACKAGE.CREATE_QUEUE('approved', 'kotick', 1, 'Concert', TO_DATE('2018-12-12', 'YYYY-MM-DD'),
-                                  TO_DATE('2020-12-12', 'YYYY-MM-DD'))
+select QUEUE_PACKAGE.CREATE_QUEUE('approved', 'kotick', 1, 'Concert', '2018-12-12', '2020-12-12')
 from dual;
 
 select *
 from table (QUEUE_PACKAGE.GET_QUEUES('approved'));
 
-select QUEUE_PACKAGE.UPDATE_QUEUE('approved', 'kotick', 1, 'Concert', TO_DATE('2018-12-12', 'YYYY-MM-DD'),
-                                  TO_DATE('2020-12-12', 'YYYY-MM-DD'),
-                                  'rejected', 'kotick', 1, 'Concert', TO_DATE('2018-12-12', 'YYYY-MM-DD'),
-                                  TO_DATE('2020-11-10', 'YYYY-MM-DD'))
+select QUEUE_PACKAGE.UPDATE_QUEUE('approved', 'kotick', 1, 'Concert', '2018-12-12', '2020-12-12',
+                                  'rejected', 'kotick', 1, 'Concert', '2018-12-12', '2020-11-10')
 from dual;
 
-select QUEUE_PACKAGE.DELETE_QUEUE('rejected', 'kotick', 1, 'Concert', TO_DATE('2018-12-12', 'YYYY-MM-DD'),
-                                  TO_DATE('2020-11-10', 'YYYY-MM-DD'))
+select QUEUE_PACKAGE.DELETE_QUEUE('rejected', 'kotick', 1, 'Concert', '2018-12-12', '2020-11-10')
 from dual;
-
