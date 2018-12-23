@@ -9,9 +9,9 @@ CREATE OR REPLACE PACKAGE PLACE_PACKAGE AS
   TYPE T_PLACE_TABLE IS TABLE OF T_PLACE;
 
   FUNCTION CREATE_PLACE(NEW_PLACE_ID    IN Place.place_id%type,
-                            NEW_ADDRESS     IN Place.ADDRESS%type,
-                            NEW_ROOM_NUMBER IN Place.ROOM_NUMBER%type,
-                            NEW_SCHEULE     IN Place.SCHEDULE%type)
+                        NEW_ADDRESS     IN Place.ADDRESS%type,
+                        NEW_ROOM_NUMBER IN Place.ROOM_NUMBER%type,
+                        NEW_SCHEULE     IN Place.SCHEDULE%type)
     RETURN VARCHAR2;
 
   FUNCTION GET_PLACES(P_ID IN Place.place_id%type default null)
@@ -30,9 +30,9 @@ END;
 
 CREATE OR REPLACE PACKAGE BODY PLACE_PACKAGE AS
   FUNCTION CREATE_PLACE(NEW_PLACE_ID    IN Place.PLACE_ID%type,
-                            NEW_ADDRESS     IN Place.ADDRESS%type,
-                            NEW_ROOM_NUMBER IN Place.ROOM_NUMBER%type,
-                            NEW_SCHEULE     IN Place.SCHEDULE%type)
+                        NEW_ADDRESS     IN Place.ADDRESS%type,
+                        NEW_ROOM_NUMBER IN Place.ROOM_NUMBER%type,
+                        NEW_SCHEULE     IN Place.SCHEDULE%type)
     RETURN VARCHAR2 AS PRAGMA AUTONOMOUS_TRANSACTION;
     BEGIN
       INSERT INTO PLACE (PLACE_ID, ADDRESS, ROOM_NUMBER, SCHEDULE)
@@ -121,7 +121,7 @@ from table (PLACE_PACKAGE.GET_PLACES());
 
 select PLACE_PACKAGE.CREATE_PLACE(100, 'Khreshatyk 1b', 110, '08:00 20:00')
 from dual;
-            
+
 select *
 from table (PLACE_PACKAGE.GET_PLACES(100));
 
@@ -130,4 +130,3 @@ from dual;
 
 select PLACE_PACKAGE.DELETE_PLACE(100)
 from dual;
-
