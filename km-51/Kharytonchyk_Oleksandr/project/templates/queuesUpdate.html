@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Queues update</title>
+</head>
+<body>
+<form action="/queuesUpdate" method="POST">
+    <a href="/">Home page</a><br>
+    <a href="/queues">Queues</a><br><br><br>
+    {{queueForm.hidden_tag()}}
+
+    {{queueForm.old_status.label}}{{queueForm.old_status}}<br/>
+    {{queueForm.old_user_login.label}}{{queueForm.old_user_login}}<br/>
+    {{queueForm.old_place_id.label}}{{queueForm.old_place_id}}<br/>
+    {{queueForm.old_event_name.label}}{{queueForm.old_event_name}}<br/>
+    {{queueForm.old_date_creation_event.label}}{{queueForm.old_date_creation_event}}<br/>
+    {{queueForm.old_date_request_creation.label}}{{queueForm.old_date_request_creation}}<br/><br>
+    {{queueForm.new_status.label}}{{queueForm.new_status}}<br/>
+    {{queueForm.new_user_login.label}}{{queueForm.new_user_login}}<br/>
+    {{queueForm.new_place_id.label}}{{queueForm.new_place_id}}<br/>
+    {{queueForm.new_event_name.label}}{{queueForm.new_event_name}}<br/>
+    {{queueForm.new_date_creation_event.label}}{{queueForm.new_date_creation_event}}<br/>
+    {{queueForm.new_date_request_creation.label}}{{queueForm.new_date_request_creation}}<br/>
+
+    {{queueForm.submit}}
+</form>
+
+<div>
+    <!--error section-->
+    Error list : {{queueForm.errors}}
+    <!--{%for error in queueForm.errors%}-->
+    <!--{{error}}-->
+    <!--{%endfor%}-->
+</div>
+
+<div>
+    Updation status :<br>
+    {{updationStatus}}
+    <!--{%for row in creationStatus%}-->
+    <!--{{row}}<br>-->
+    <!--{%endfor%}-->
+</div>
+</body>
+</html>

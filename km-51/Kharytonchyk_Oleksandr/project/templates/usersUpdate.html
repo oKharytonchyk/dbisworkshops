@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Users update</title>
+</head>
+<body>
+<form action="/usersUpdate" method="POST">
+    <a href="/">Home page</a><br>
+    <a href="/users">Users</a><br><br><br>
+    {{userForm.hidden_tag()}}
+
+    {{userForm.old_login.label}}{{userForm.old_login}}<br/>
+    {{userForm.new_login.label}}{{userForm.new_login}}<br/>
+    {{userForm.new_password.label}}{{userForm.new_password}}<br/>
+    {{userForm.new_email.label}}{{userForm.new_email}}<br/>
+
+    {{userForm.submit}}
+</form>
+
+<div>
+    <!--error section-->
+    Error list : {{userForm.errors}}
+    <!--{%for error in userForm.errors%}-->
+    <!--{{error}}-->
+    <!--{%endfor%}-->
+</div>
+
+<div>
+    <!--Creation status-->
+    Updation status :<br>
+    {{updationStatus}}
+    <!--{%for row in creationStatus%}-->
+    <!--{{row}}<br>-->
+    <!--{%endfor%}-->
+</div>
+</body>
+</html>

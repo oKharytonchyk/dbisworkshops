@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+</head>
+<body>
+<!-- need myform is instance of UserLoginForm-->
+<form action="/auth/login" method="POST">
+    <a href="/">Home page</a><br><br><br>
+    {{myform.hidden_tag()}}
+    {{myform.login.label}}{{myform.login}}<br/>
+    {{myform.password.label}}{{myform.password}}<br/>
+    {{myform.submit}}
+</form>
+
+<div>
+    Error list : {{myform.errors}}
+    <!--{%for error in myform.errors%}-->
+    <!--{{error}}-->
+    <!--{%endfor%}-->
+</div>
+
+<div>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <ul class=flashes>
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
+</div>
+</body>
+</html>

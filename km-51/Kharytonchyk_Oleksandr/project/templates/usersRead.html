@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Users read</title>
+</head>
+<body>
+<form action="/usersRead" method="POST">
+    <a href="/">Home page</a><br>
+    <a href="/users">Users</a><br><br><br>
+    {{userForm.hidden_tag()}}
+
+    {{userForm.select_login.label}}{{userForm.select_login}}<br/>
+
+    {{userForm.submit}}
+</form>
+
+<div>
+    Error list : {{userForm.errors}}
+    <!--{%for error in userForm.errors%}-->
+    <!--{{error}}-->
+    <!--{%endfor%}-->
+</div>
+
+<div>
+    Users list :<br>
+    {%for row in selectedUsers%}
+    {{row}}<br>
+    {%endfor%}
+</div>
+</body>
+</html>

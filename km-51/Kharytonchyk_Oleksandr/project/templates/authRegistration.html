@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Registration</title>
+</head>
+<body>
+<form action="/auth/registration" method="POST">
+    <a href="/">Home page</a><br><br><br>
+    {{regForm.hidden_tag()}}
+
+    {{regForm.login.label}}{{regForm.login}}<br/>
+    {{regForm.password.label}}{{regForm.password}}<br/>
+    {{regForm.email.label}}{{regForm.email}}<br/>
+    {{regForm.submit}}
+
+</form>
+
+<div>
+    Error list : {{regForm.errors}}
+    <!--{%for error in regForm.errors%}-->
+    <!--{{error}}-->
+    <!--{%endfor%}-->
+</div>
+</body>
+</html>

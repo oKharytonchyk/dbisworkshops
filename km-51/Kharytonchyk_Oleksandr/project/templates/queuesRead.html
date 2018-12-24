@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Queues read</title>
+</head>
+<body>
+<form action="/queuesRead" method="POST">
+    <a href="/">Home page</a><br>
+    <a href="/queues">Queues</a><br><br><br>
+    {{queueForm.hidden_tag()}}
+
+    {{queueForm.select_status.label}}{{queueForm.select_status}}<br/>
+    {{queueForm.select_user_login.label}}{{queueForm.select_user_login}}<br/>
+    {{queueForm.select_place_id.label}}{{queueForm.select_place_id}}<br/>
+    {{queueForm.select_event_name.label}}{{queueForm.select_event_name}}<br/>
+    {{queueForm.select_date_creation_event.label}}{{queueForm.select_date_creation_event}}<br/>
+    {{queueForm.select_date_request_creation.label}}{{queueForm.select_date_request_creation}}<br/>
+
+    {{queueForm.submit}}
+</form>
+
+<div>
+    Error list : {{queueForm.errors}}
+    <!--{%for error in queueForm.errors%}-->
+    <!--{{error}}-->
+    <!--{%endfor%}-->
+</div>
+
+<div>
+    Queues list :<br>
+    {%for row in selectedQueues%}
+    {{row}}<br>
+    {%endfor%}
+</div>
+</body>
+</html>

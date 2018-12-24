@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Queues delete</title>
+</head>
+<body>
+<form action="/queuesDelete" method="POST">
+    <a href="/">Home page</a><br>
+    <a href="/queues">Queues</a><br><br><br>
+    {{queueForm.hidden_tag()}}
+
+    {{queueForm.delete_status.label}}{{queueForm.delete_status}}<br/>
+    {{queueForm.delete_user_login.label}}{{queueForm.delete_user_login}}<br/>
+    {{queueForm.delete_place_id.label}}{{queueForm.delete_place_id}}<br/>
+    {{queueForm.delete_event_name.label}}{{queueForm.delete_event_name}}<br/>
+    {{queueForm.delete_date_creation_event.label}}{{queueForm.delete_date_creation_event}}<br/>
+    {{queueForm.delete_date_request_creation.label}}{{queueForm.delete_date_request_creation}}<br/>
+
+    {{queueForm.submit}}
+</form>
+
+<div>
+    <!--error section-->
+    Error list : {{queueForm.errors}}
+    <!--{%for error in queueForm.errors%}-->
+    <!--{{error}}-->
+    <!--{%endfor%}-->
+</div>
+
+<div>
+    Deletion status :<br>
+    {{deletionStatus}}
+    <!--{%for row in creationStatus%}-->
+    <!--{{row}}<br>-->
+    <!--{%endfor%}-->
+</div>
+</body>
+</html>

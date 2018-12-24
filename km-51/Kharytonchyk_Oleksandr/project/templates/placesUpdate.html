@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Places update</title>
+</head>
+<body>
+<form action="/placesUpdate" method="POST">
+    <a href="/">Home page</a><br>
+    <a href="/places">Places</a><br><br><br>
+    {{placeForm.hidden_tag()}}
+
+    {{placeForm.old_place_id.label}}{{placeForm.old_place_id}}<br/>
+    {{placeForm.new_place_id.label}}{{placeForm.new_place_id}}<br/>
+    {{placeForm.new_address.label}}{{placeForm.new_address}}<br/>
+    {{placeForm.new_room_number.label}}{{placeForm.new_room_number}}<br/>
+    {{placeForm.new_schedule.label}}{{placeForm.new_schedule}}<br/>
+
+    {{placeForm.submit}}
+</form>
+
+<div>
+    <!--error section-->
+    Error list : {{placeForm.errors}}
+    <!--{%for error in placeForm.errors%}-->
+    <!--{{error}}-->
+    <!--{%endfor%}-->
+</div>
+
+<div>
+    <!--Creation status-->
+    Updation status :<br>
+    {{updationStatus}}
+    <!--{%for row in creationStatus%}-->
+    <!--{{row}}<br>-->
+    <!--{%endfor%}-->
+</div>
+</body>
+</html>
