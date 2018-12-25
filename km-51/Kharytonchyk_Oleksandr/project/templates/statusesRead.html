@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Statuses read</title>
+</head>
+<body>
+<form action="/statusesRead" method="POST">
+    <a href="/">Home page</a><br>
+    <a href="/statuses">Statuses</a><br><br><br>
+    {{statusForm.hidden_tag()}}
+
+    {{statusForm.select_status.label}}{{statusForm.select_status}}<br/>
+
+    {{statusForm.submit}}
+</form>
+
+<div>
+    Error list : {{statusForm.errors}}
+    <!--{%for error in statusForm.errors%}-->
+    <!--{{error}}-->
+    <!--{%endfor%}-->
+</div>
+
+<div>
+    Status list :<br>
+    {%for row in selectedStatuses%}
+    {{row}}<br>
+    {%endfor%}
+</div>
+</body>
+</html>

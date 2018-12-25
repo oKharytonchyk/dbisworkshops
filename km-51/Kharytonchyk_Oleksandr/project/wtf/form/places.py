@@ -25,9 +25,7 @@ class PlaceCreateForm(Form):
 
 
 class PlaceReadForm(Form):
-    select_place_id = StringField("Select place with id : ",
-                                  [validators.regexp('^\d{0,10}$', flags=0,
-                                                     message='Please enter like this d{0,10}')])
+    select_place_id = StringField("Select place with id : ")
     submit = SubmitField("Select one or all places")
 
 

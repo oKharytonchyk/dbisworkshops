@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Statuses create</title>
+</head>
+<body>
+<form action="/statusesCreate" method="POST">
+    <a href="/">Home page</a><br>
+    <a href="/statuses">Statuses</a><br><br><br>
+    {{statusForm.hidden_tag()}}
+
+    {{statusForm.new_status.label}}{{statusForm.new_status}}<br/>
+
+    {{statusForm.submit}}
+</form>
+
+<div>
+    Error list : {{statusForm.errors}}
+    <!--{%for error in statusForm.errors%}-->
+    <!--{{error}}-->
+    <!--{%endfor%}-->
+</div>
+
+<div>
+    Creation status :<br>
+    {{creationStatus}}
+    <!--{%for row in creationStatus%}-->
+    <!--{{row}}<br>-->
+    <!--{%endfor%}-->
+</div>
+</body>
+</html>

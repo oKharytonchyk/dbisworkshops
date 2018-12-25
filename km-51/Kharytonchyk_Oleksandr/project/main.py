@@ -1,9 +1,12 @@
 from flask import Flask, render_template, request, make_response, session, redirect, url_for, flash
 
 from DAO import *
-from wtf.form.users import UserLoginForm, UserRegistrationForm, UserReadForm, UserUpdateForm, UserDeleteForm
-from wtf.form.places import PlaceCreateForm, PlaceReadForm, PlaceUpdateForm, PlaceDeleteForm
-from wtf.form.queues import QueueCreateForm, QueueReadForm, QueueUpdateForm, QueueDeleteForm
+from wtf.form.users import *
+from wtf.form.places import *
+from wtf.form.statuses import *
+from wtf.form.events import *
+from wtf.form.createdEvents import *
+from wtf.form.queues import *
 import datetime
 
 app = Flask(__name__)
@@ -238,6 +241,238 @@ def placesDelete():
             place.__enter__()
             var = place.delete_place(request.form['delete_place_id'])
             return render_template('placesDelete.html', deletionStatus=var, placeForm=form)
+
+
+@app.route('/statuses')
+def statuses():
+    return render_template('statuses.html')
+
+
+@app.route('/statusesCreate', methods=["GET", "POST"])
+def statusesCreate():
+    form = StatusCreateForm()
+
+    if request.method == "GET":
+        return render_template('statusesCreate.html', statusForm=form)
+    if request.method == "POST":
+        if not form.validate():
+            return render_template('statusesCreate.html', statusForm=form)
+        else:
+            status = Status()
+            status.__enter__()
+            var = status.create_status(request.form['new_status'])
+            return render_template('statusesCreate.html', creationStatus=var, statusForm=form)
+
+
+@app.route('/statusesRead', methods=["GET", "POST"])
+def statusesRead():
+    form = StatusReadForm()
+
+    if request.method == "GET":
+        return render_template('statusesRead.html', statusForm=form)
+    if request.method == "POST":
+        if not form.validate():
+            return render_template('statusesRead.html', statusForm=form)
+        else:
+            status = Status()
+            status.__enter__()
+            if request.form['select_status'] == "":
+                var = status.get_statuses()
+            else:
+                var = status.get_status(request.form['select_status'])
+            return render_template('statusesRead.html', selectedStatuses=var, statusForm=form)
+
+
+@app.route('/statusesUpdate', methods=["GET", "POST"])
+def statusesUpdate():
+    form = StatusUpdateForm()
+
+    if request.method == "GET":
+        return render_template('statusesUpdate.html', statusForm=form)
+    if request.method == "POST":
+        if not form.validate():
+            return render_template('statusesUpdate.html', statusForm=form)
+        else:
+            status = Status()
+            status.__enter__()
+            var = status.update_status(request.form['old_status'], request.form['new_status'])
+            return render_template('statusesUpdate.html', updationStatus=var, statusForm=form)
+
+
+@app.route('/statusesDelete', methods=["GET", "POST"])
+def statusesDelete():
+    form = StatusDeleteForm()
+
+    if request.method == "GET":
+        return render_template('statusesDelete.html', statusForm=form)
+    if request.method == "POST":
+        if not form.validate():
+            return render_template('statusesDelete.html', statusForm=form)
+        else:
+            status = Status()
+            status.__enter__()
+            var = status.delete_status(request.form['delete_status'])
+            return render_template('statusesDelete.html', deletionStatus=var, statusForm=form)
+
+
+@app.route('/events')
+def events():
+    return render_template('events.html')
+
+
+@app.route('/eventsCreate', methods=["GET", "POST"])
+def eventsCreate():
+    form = EventCreateForm()
+
+    if request.method == "GET":
+        return render_template('eventsCreate.html', eventForm=form)
+    if request.method == "POST":
+        if not form.validate():
+            return render_template('eventsCreate.html', eventForm=form)
+        else:
+            event = Event()
+            event.__enter__()
+            var = event.create_event(request.form['new_event_name'])
+            return render_template('eventsCreate.html', creationStatus=var, eventForm=form)
+
+
+@app.route('/eventsRead', methods=["GET", "POST"])
+def eventsRead():
+    form = EventReadForm()
+
+    if request.method == "GET":
+        return render_template('eventsRead.html', eventForm=form)
+    if request.method == "POST":
+        if not form.validate():
+            return render_template('eventsRead.html', eventForm=form)
+        else:
+            event = Event()
+            event.__enter__()
+            if request.form['select_event'] == "":
+                var = event.get_events()
+            else:
+                var = event.get_event(request.form['select_event'])
+            return render_template('eventsRead.html', selectedEvents=var, eventForm=form)
+
+
+@app.route('/eventsUpdate', methods=["GET", "POST"])
+def eventsUpdate():
+    form = EventUpdateForm()
+
+    if request.method == "GET":
+        return render_template('eventsUpdate.html', eventForm=form)
+    if request.method == "POST":
+        if not form.validate():
+            return render_template('eventsUpdate.html', eventForm=form)
+        else:
+            event = Event()
+            event.__enter__()
+            var = event.update_event(request.form['old_event_name'], request.form['new_event_name'])
+            return render_template('eventsUpdate.html', updationStatus=var, eventForm=form)
+
+
+@app.route('/eventsDelete', methods=["GET", "POST"])
+def eventsDelete():
+    form = EventDeleteForm()
+
+    if request.method == "GET":
+        return render_template('eventsDelete.html', eventForm=form)
+    if request.method == "POST":
+        if not form.validate():
+            return render_template('eventsDelete.html', eventForm=form)
+        else:
+            event = Event()
+            event.__enter__()
+            var = event.delete_event(request.form['delete_event'])
+            return render_template('eventsDelete.html', deletionStatus=var, eventForm=form)
+
+
+@app.route('/createdEvents')
+def createdEvents():
+    return render_template('createdEvents.html')
+
+
+@app.route('/createdEventsCreate', methods=["GET", "POST"])
+def createdEventsCreate():
+    form = CreatedEventCreateForm()
+
+    if request.method == "GET":
+        return render_template('createdEventsCreate.html', createdEventForm=form)
+    if request.method == "POST":
+        if not form.validate():
+            return render_template('createdEventsCreate.html', createdEventForm=form)
+        else:
+            createdEvent = CreatedEvent()
+            createdEvent.__enter__()
+            var = createdEvent.create_created_event(request.form['new_place_id'], request.form['new_event_name'],
+                                                    request.form['new_date_creation_event'])
+            return render_template('createdEventsCreate.html', creationStatus=var, createdEventForm=form)
+
+
+@app.route('/createdEventsRead', methods=["GET", "POST"])
+def createdEventsRead():
+    form = CreatedEventReadForm()
+
+    if request.method == "GET":
+        return render_template('createdEventsRead.html', createdEventForm=form)
+    if request.method == "POST":
+        if not form.validate():
+            return render_template('createdEventsRead.html', createdEventForm=form)
+        else:
+            createdEvent = CreatedEvent()
+            createdEvent.__enter__()
+            if request.form['select_place_id'] == "":
+                var = createdEvent.get_created_events_0()
+            else:
+                if request.form['select_event_name'] == "":
+                    var = createdEvent.get_created_events_1(request.form['select_place_id'])
+                else:
+                    if request.form['select_date_creation_event'] == "":
+                        var = createdEvent.get_created_events_2(request.form['select_place_id'],
+                                                                request.form['select_event_name'])
+                    else:
+                        var = createdEvent.get_created_events_3(request.form['select_place_id'],
+                                                                request.form['select_event_name'],
+                                                                request.form['select_date_creation_event'])
+
+            return render_template('createdEventsRead.html', selectedCreatedEvents=var, createdEventForm=form)
+
+
+@app.route('/createdEventsUpdate', methods=["GET", "POST"])
+def createdEventsUpdate():
+    form = CreatedEventUpdateForm()
+
+    if request.method == "GET":
+        return render_template('createdEventsUpdate.html', createdEventForm=form)
+    if request.method == "POST":
+        if not form.validate():
+            return render_template('createdEventsUpdate.html', createdEventForm=form)
+        else:
+            createdEvent = CreatedEvent()
+            createdEvent.__enter__()
+            var = createdEvent.update_created_event(request.form['old_place_id'], request.form['old_event_name'],
+                                                    request.form['old_date_creation_event'],
+                                                    request.form['new_place_id'],
+                                                    request.form['new_event_name'],
+                                                    request.form['new_date_creation_event'])
+            return render_template('createdEventsUpdate.html', updationStatus=var, createdEventForm=form)
+
+
+@app.route('/createdEventsDelete', methods=["GET", "POST"])
+def createdEventsDelete():
+    form = CreatedEventDeleteForm()
+
+    if request.method == "GET":
+        return render_template('createdEventsDelete.html', createdEventForm=form)
+    if request.method == "POST":
+        if not form.validate():
+            return render_template('createdEventsDelete.html', createdEventForm=form)
+        else:
+            createdEvent = CreatedEvent()
+            createdEvent.__enter__()
+            var = createdEvent.delete_created_event(request.form['delete_place_id'], request.form['delete_event_name'],
+                                                    request.form['delete_date_creation_event'])
+            return render_template('createdEventsDelete.html', deletionStatus=var, createdEventForm=form)
 
 
 @app.route('/queues')

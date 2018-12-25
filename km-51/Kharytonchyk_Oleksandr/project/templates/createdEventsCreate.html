@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Created events create</title>
+</head>
+<body>
+<form action="/createdEventsCreate" method="POST">
+    <a href="/">Home page</a><br>
+    <a href="/createdEvents">Created events</a><br><br><br>
+    {{createdEventForm.hidden_tag()}}
+
+    {{createdEventForm.new_place_id.label}}{{createdEventForm.new_place_id}}<br/>
+    {{createdEventForm.new_event_name.label}}{{createdEventForm.new_event_name}}<br/>
+    {{createdEventForm.new_date_creation_event.label}}{{createdEventForm.new_date_creation_event}}<br/>
+
+    {{createdEventForm.submit}}
+</form>
+
+<div>
+    <!--error section-->
+    Error list : {{createdEventForm.errors}}
+    <!--{%for error in createdEventForm.errors%}-->
+    <!--{{error}}-->
+    <!--{%endfor%}-->
+</div>
+
+<div>
+    Creation status :<br>
+    {{creationStatus}}
+    <!--{%for row in creationStatus%}-->
+    <!--{{row}}<br>-->
+    <!--{%endfor%}-->
+</div>
+</body>
+</html>

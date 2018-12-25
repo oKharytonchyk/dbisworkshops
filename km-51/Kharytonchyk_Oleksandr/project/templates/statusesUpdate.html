@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Statuses update</title>
+</head>
+<body>
+<form action="/statusesUpdate" method="POST">
+    <a href="/">Home page</a><br>
+    <a href="/statuses">Statuses</a><br><br><br>
+    {{statusForm.hidden_tag()}}
+
+    {{statusForm.old_status.label}}{{statusForm.old_status}}<br/>
+    {{statusForm.new_status.label}}{{statusForm.new_status}}<br/>
+
+    {{statusForm.submit}}
+</form>
+
+<div>
+    Error list : {{statusForm.errors}}
+    <!--{%for error in statusForm.errors%}-->
+    <!--{{error}}-->
+    <!--{%endfor%}-->
+</div>
+
+<div>
+    Updation status :<br>
+    {{updationStatus}}
+    <!--{%for row in creationStatus%}-->
+    <!--{{row}}<br>-->
+    <!--{%endfor%}-->
+</div>
+</body>
+</html>

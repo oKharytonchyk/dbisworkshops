@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Events read</title>
+</head>
+<body>
+<form action="/eventsRead" method="POST">
+    <a href="/">Home page</a><br>
+    <a href="/events">Events</a><br><br><br>
+    {{eventForm.hidden_tag()}}
+
+    {{eventForm.select_event.label}}{{eventForm.select_event}}<br/>
+
+    {{eventForm.submit}}
+</form>
+
+<div>
+    Error list : {{eventForm.errors}}
+    <!--{%for error in eventForm.errors%}-->
+    <!--{{error}}-->
+    <!--{%endfor%}-->
+</div>
+
+<div>
+    Events list :<br>
+    {%for row in selectedEvents%}
+    {{row}}<br>
+    {%endfor%}
+</div>
+</body>
+</html>

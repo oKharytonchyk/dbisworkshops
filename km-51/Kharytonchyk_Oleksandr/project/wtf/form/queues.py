@@ -33,12 +33,12 @@ class QueueCreateForm(Form):
 
 
 class QueueReadForm(Form):
-    select_status = StringField("New queue with status : ")
-    select_user_login = StringField("New queue with user login : ")
-    select_place_id = StringField("New queue with place id : ")
-    select_event_name = StringField("New queue with event name : ")
-    select_date_creation_event = StringField("New queue with date creation event : ")
-    select_date_request_creation = StringField("New queue with date request creation : ")
+    select_status = StringField("Select queue with status : ")
+    select_user_login = StringField("Select queue with user login : ")
+    select_place_id = StringField("Select queue with place id : ")
+    select_event_name = StringField("Select queue with event name : ")
+    select_date_creation_event = StringField("Select queue with date creation event : ")
+    select_date_request_creation = StringField("Select queue with date request creation : ")
     submit = SubmitField("Select one or all queues")
 
 
@@ -97,29 +97,12 @@ class QueueUpdateForm(Form):
 
 
 class QueueDeleteForm(Form):
-    delete_status = StringField("Delete queue with status : ",
-                                [validators.DataRequired("Required"),
-                                 validators.regexp('^[^";]{4,20}$', flags=0,
-                                                   message='Please enter like this [^";]{4,20}')])
-    delete_user_login = StringField("Delete queue with user login : ",
-                                    [validators.DataRequired("Required"),
-                                     validators.regexp('^[^";]{4,20}$', flags=0,
-                                                       message='Please enter like this [^";]{4,20}')])
-    delete_place_id = StringField("Delete queue with place id : ",
-                                  [validators.DataRequired("Required"),
-                                   validators.regexp('^\d{1,10}$', flags=0,
-                                                     message='Please enter like this d{1,10}')])
-    delete_event_name = StringField("Delete queue with event name : ",
-                                    [validators.DataRequired("Required"),
-                                     validators.regexp('^[^";]{4,50}$', flags=0,
-                                                       message='Please enter like this [^";]{4,50}')])
+    delete_status = StringField("Delete queue with status : ", [validators.DataRequired("Required")])
+    delete_user_login = StringField("Delete queue with user login : ", [validators.DataRequired("Required")])
+    delete_place_id = StringField("Delete queue with place id : ", [validators.DataRequired("Required")])
+    delete_event_name = StringField("Delete queue with event name : ", [validators.DataRequired("Required")])
     delete_date_creation_event = StringField("Delete queue with date creation event : ",
-                                             [validators.DataRequired("Required"),
-                                              validators.regexp('^\d{4}-\d{2}-\d{2}$',
-                                                                flags=0,
-                                                                message='Please enter like this \d{4}-\d{2}-\d{2}')])
+                                             [validators.DataRequired("Required")])
     delete_date_request_creation = StringField("Delete queue with date request creation : ",
-                                               [validators.DataRequired("Required"),
-                                                validators.regexp('^\d{4}-\d{2}-\d{2}$', flags=0,
-                                                                  message='Please enter like this \d{4}-\d{2}-\d{2}')])
+                                               [validators.DataRequired("Required")])
     submit = SubmitField("Delete queue")

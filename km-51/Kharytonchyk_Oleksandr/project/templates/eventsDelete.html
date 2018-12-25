@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Events delete</title>
+</head>
+<body>
+<form action="/eventsDelete" method="POST">
+    <a href="/">Home page</a><br>
+    <a href="/events">Events</a><br><br><br>
+    {{eventForm.hidden_tag()}}
+
+    {{eventForm.delete_event.label}}{{eventForm.delete_event}}<br/>
+
+    {{eventForm.submit}}
+</form>
+
+<div>
+    Error list : {{eventForm.errors}}
+    <!--{%for error in eventForm.errors%}-->
+    <!--{{error}}-->
+    <!--{%endfor%}-->
+</div>
+
+<div>
+    Deletion status :<br>
+    {{deletionStatus}}
+    <!--{%for row in creationStatus%}-->
+    <!--{{row}}<br>-->
+    <!--{%endfor%}-->
+</div>
+</body>
+</html>

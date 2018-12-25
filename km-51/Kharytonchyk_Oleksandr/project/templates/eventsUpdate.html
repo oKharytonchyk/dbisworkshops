@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Events update</title>
+</head>
+<body>
+<form action="/eventsUpdate" method="POST">
+    <a href="/">Home page</a><br>
+    <a href="/events">Events</a><br><br><br>
+    {{eventForm.hidden_tag()}}
+
+    {{eventForm.old_event_name.label}}{{eventForm.old_event_name}}<br/>
+    {{eventForm.new_event_name.label}}{{eventForm.new_event_name}}<br/>
+
+    {{eventForm.submit}}
+</form>
+
+<div>
+    Error list : {{eventForm.errors}}
+    <!--{%for error in eventForm.errors%}-->
+    <!--{{error}}-->
+    <!--{%endfor%}-->
+</div>
+
+<div>
+    Updation status :<br>
+    {{updationStatus}}
+    <!--{%for row in creationStatus%}-->
+    <!--{{row}}<br>-->
+    <!--{%endfor%}-->
+</div>
+</body>
+</html>
